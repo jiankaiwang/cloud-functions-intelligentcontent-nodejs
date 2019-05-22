@@ -1,5 +1,5 @@
 /**
- * Copyright 2016, Google, Inc.
+ * Copyright 2016, JianKai Wang.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -51,13 +51,13 @@ function publishResult (topicName, data) {
  * @param {object} event The Cloud Functions event which contains a pubsub message
  */
 exports.GCStoPubsub = function GCStoPubsub (event) {
-  const eventData = event.data;
-  const jsonData = Buffer.from(eventData.data, 'base64').toString();
-
-  var jsonObj = JSON.parse(jsonData);
+  const jsonData = Buffer.from(event.data, 'base64').toString();
+  var jsonObj = event;
 
   return Promise.resolve()
     .then(() => {
+
+      jsonObj = JSON.parse(jsonData);
 
       if ((typeof(jsonObj.bucket) === "undefined") || (!jsonObj.bucket)) {
         console.error(`Input request: ${jsonData}`);
@@ -136,7 +136,8 @@ exports.GCStoPubsub = function GCStoPubsub (event) {
 
 exports.insertIntoBigQuery = function insertIntoBigQuery(event){
   
-  const reqData = Buffer.from(event.data.data, 'base64').toString();
+  //const reqData = Buffer.from(event.data.data, 'base64').toString();
+  const reqData = Buffer.from(event.data, 'base64').toString();
   const reqDataObj = JSON.parse(reqData);
   console.info(reqDataObj);
 
@@ -190,7 +191,8 @@ exports.insertIntoBigQuery = function insertIntoBigQuery(event){
  * @param {object} event The Cloud Functions event which contains a message with the GCS file details
  */
 exports.visionAPI = function visionAPI (event) {
-  const reqData = Buffer.from(event.data.data, 'base64').toString();
+  //const reqData = Buffer.from(event.data.data, 'base64').toString();
+  const reqData = Buffer.from(event.data, 'base64').toString();
   const reqDataObj = JSON.parse(reqData);
   console.info(reqData);
   var bqInsertObj = {};
@@ -314,7 +316,8 @@ exports.visionAPI = function visionAPI (event) {
  */
 exports.videoIntelligenceAPI = function videoIntelligenceAPI (event) 
 {
-  const reqData = Buffer.from(event.data.data, 'base64').toString();
+  //const reqData = Buffer.from(event.data.data, 'base64').toString();
+  const reqData = Buffer.from(event.data, 'base64').toString();
   const reqDataObj = JSON.parse(reqData);
   console.info(reqData);
   var bqInsertObj = {};

@@ -1,0 +1,14 @@
+
+#standardSql
+
+SELECT insertTimestamp,
+  contentUrl,
+  flattenedSafeSearch.flaggedType,
+  flattenedSafeSearch.likelihood
+FROM `PROJECT_ID.DATASET_ID.TABLE_ID`
+CROSS JOIN UNNEST(safeSearch) AS flattenedSafeSearch
+ORDER BY insertTimestamp DESC,
+  contentUrl,
+  flattenedSafeSearch.flaggedType
+LIMIT 1000
+
